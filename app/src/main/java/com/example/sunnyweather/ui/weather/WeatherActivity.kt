@@ -1,5 +1,6 @@
 package com.example.sunnyweather.ui.weather
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.sunnyweather.MainActivity
 import com.example.sunnyweather.R
+import com.example.sunnyweather.SunnyWeatherApplication.Companion.context
 import com.example.sunnyweather.logic.model.Weather
 import com.example.sunnyweather.logic.model.getSky
 import kotlinx.android.synthetic.main.activity_weather.*
@@ -25,6 +28,21 @@ class WeatherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
+        viewModel.weatherLiveData.observe(this, Observer { result ->
+            val weather = result.getOrNull()
+            if (weather != null) {
+                showWeatherInfo(weather)
+            } else {
+                Toast.makeText(this, "无法成功获取天气信息", Toast.LENGTH_SHORT).show()
+                result.exceptionOrNull()?.printStackTrace()
+            }
+            swipeRefresh.isRefreshing = false
+        })
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
+        refreshWeather()
+        swipeRefresh.setOnRefreshListener {
+            refreshWeather()
+        }
         if (viewModel.locationLng.isEmpty()) {
             viewModel.locationLng = intent.getStringExtra("location_lng") ?: ""
         }
@@ -44,6 +62,10 @@ class WeatherActivity : AppCompatActivity() {
             }
         })
         viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+    }
+    fun refreshWeather() {
+        viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        swipeRefresh.isRefreshing = true
     }
     private fun showWeatherInfo(weather: Weather) {
         placeName.text = viewModel.placeName
@@ -85,4 +107,5 @@ class WeatherActivity : AppCompatActivity() {
         carWashingText.text = lifeIndex.carWashing[0].desc
         weatherLayout.visibility = View.VISIBLE
     }
+
 }
