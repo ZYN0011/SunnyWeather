@@ -33,7 +33,7 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val decorView = window.decorView
         decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        window.statusBarColor = Color.TRANSPARENT
+       window.statusBarColor = Color.TRANSPARENT
         setContentView(R.layout.activity_weather)
         navBtn.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
