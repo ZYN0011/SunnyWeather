@@ -23,23 +23,7 @@ List<Place>) : RecyclerView.Adapter<PlaceAdapter.ViewHolder>(){
 //            parent, false)
 //        return ViewHolder(view)
 //    }
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val view = LayoutInflater.from(parent.context).inflate(R.layout.place_item,
-//            parent, false)
-//        val holder = ViewHolder(view)
-//        holder.itemView.setOnClickListener {
-//            val position = holder.adapterPosition
-//            val place = placeList[position]
-//            val intent = Intent(parent.context, WeatherActivity::class.java).apply {
-//                putExtra("location_lng", place.location.lng)
-//                putExtra("location_lat", place.location.lat)
-//                putExtra("place_name", place.name)
-//            }
-//            fragment.startActivity(intent)
-//            fragment.activity?.finish()
-//        }
-//        return holder
-//    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val place = placeList[position]
         holder.placeName.text = place.name
